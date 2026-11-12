@@ -52,3 +52,4 @@ def crear_sistema_prompts() -> ChatPromptTemplate:
         ("system", PROMPT_SISTEMA_RECLUTADOR),
         ("human", PROMPT_USUARIO_EVALUACION),
     ])
+

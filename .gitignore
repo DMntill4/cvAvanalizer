@@ -27,6 +27,9 @@ htmlcov/
 *.swo
 .DS_Store
 
-# Datos temporales
+# Datos temporales y análisis generados
 *.tmp
 temp_pdfs/
+app/intermedio/cv_analyzer/analisis_guardados/
+!app/intermedio/cv_analyzer/analisis_guardados/.gitkeep
+

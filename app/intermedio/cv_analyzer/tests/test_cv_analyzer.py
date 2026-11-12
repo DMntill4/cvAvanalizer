@@ -240,3 +240,4 @@ def test_evaluar_candidato_valida_entradas_vacias():
 
     with pytest.raises(ValueError, match="descripción"):
         evaluar_candidato(cv_texto="Texto válido de CV", descripcion_puesto="")
+

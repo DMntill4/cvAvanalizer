@@ -60,3 +60,4 @@ docker compose exec -w /app/app/intermedio/cv_analyzer app python -m streamlit r
 ```
 
 Consulta [`app/intermedio/cv_analyzer/README.md`](app/intermedio/cv_analyzer/README.md) para ver la especificación técnica completa, umbrales y criterios de evaluación.
+

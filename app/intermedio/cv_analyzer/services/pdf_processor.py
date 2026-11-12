@@ -92,3 +92,4 @@ def extraer_texto_pdf(archivo_pdf: Union[BinaryIO, bytes, io.BytesIO]) -> tuple[
             None,
             f"Ocurrió un error inesperado al leer el archivo PDF: {exc}",
         )
+

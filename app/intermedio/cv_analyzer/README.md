@@ -166,3 +166,4 @@ pytest app/intermedio/cv_analyzer/tests/ -v
 * **Corrección del bloque de contingencia:** Se resolvió el fallo en el que se instanciaba `AnalisisCV` con los atributos erróneos `fotalezas` y `porcetaje_ajuste`. Se utilizan los nombres validados `fortalezas` y `porcentaje_ajuste`.
 * **Modo Demostración / Offline:** Permite realizar pruebas deterministas del flujo de interfaz y renderizado cuando no se dispone de cuota activa en la API.
 * **Soporte Dual:** Compatibilidad tanto con `gpt-4o-mini` de OpenAI como con `gemini-3.5-flash` de Google.
+

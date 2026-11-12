@@ -78,3 +78,4 @@ class AnalisisCV(BaseModel):
         if score >= 50:
             return "Candidato con potencial"
         return "Candidato no recomendado"
+

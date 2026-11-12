@@ -52,3 +52,4 @@ with col2:
         - **Modelos Compatibles:** OpenAI (gpt-4o-mini) y Google Gemini
         """
     )
+

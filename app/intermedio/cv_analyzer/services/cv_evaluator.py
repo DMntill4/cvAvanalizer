@@ -248,3 +248,4 @@ def evaluar_candidato(
         raise RuntimeError(
             f"Fallo en la inferencia del modelo estructurado ({type(exc).__name__}): {error_msg}"
         ) from exc
+

@@ -7,9 +7,15 @@ estructurados con doble umbral de clasificación sin emojis.
 
 from __future__ import annotations
 
+import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
+
+# Cargar variables de entorno desde la raíz del proyecto
+load_dotenv(find_dotenv())
 import streamlit as st
 
 # Asegurar que el directorio del módulo esté en sys.path para resolución de imports
@@ -185,14 +191,14 @@ def aplicar_estilos_tecnicos():
         /* Lista de habilidades en tags */
         .skill-tag {
             display: inline-block;
-            padding: 0.3rem 0.65rem;
-            margin: 0.2rem;
+            padding: 0.35rem 0.75rem;
+            margin: 0.25rem;
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
-            background: rgba(148, 163, 184, 0.12);
-            color: var(--text-color, #1E293B);
-            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: rgba(2, 132, 199, 0.12);
+            color: #0284C7 !important;
+            border: 1px solid rgba(2, 132, 199, 0.35);
             font-family: 'JetBrains Mono', monospace;
         }
         </style>
@@ -275,9 +281,9 @@ def main():
 
         proveedor_opcion = st.selectbox(
             "Proveedor de IA:",
-            options=["OpenAI (Estándar gpt-4o-mini)", "Google Gemini (Alternativa Gratuita)"],
+            options=["Google Gemini (Alternativa Gratuita)", "OpenAI (Estándar gpt-4o-mini)"],
             index=0,
-            help="OpenAI es el modelo especificado por el taller. Gemini está disponible como contingencia.",
+            help="Selecciona el proveedor de IA para la inferencia estructurada.",
         )
         es_gemini = "gemini" in proveedor_opcion.lower()
 
@@ -373,10 +379,26 @@ def main():
         boton_guardar = st.button("Guardar Análisis", use_container_width=True)
 
     if boton_limpiar:
+        st.session_state.pop("ultimo_analisis", None)
         st.rerun()
 
     if boton_guardar:
-        st.info("Funcionalidad en desarrollo. El análisis no se almacena en base de datos.")
+        analisis_a_guardar = st.session_state.get("ultimo_analisis")
+        if analisis_a_guardar:
+            try:
+                guardados_dir = CURRENT_DIR / "analisis_guardados"
+                guardados_dir.mkdir(parents=True, exist_ok=True)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                # Limpiar caracteres inválidos para nombre de archivo
+                nombre_limpio = "".join(c for c in analisis_a_guardar.get("nombre_candidato", "candidato") if c.isalnum() or c in (" ", "_", "-")).strip().replace(" ", "_")
+                archivo_salida = guardados_dir / f"analisis_{nombre_limpio}_{timestamp}.json"
+                with open(archivo_salida, "w", encoding="utf-8") as f:
+                    json.dump(analisis_a_guardar, f, ensure_ascii=False, indent=2)
+                st.success(f"Análisis guardado exitosamente en `{archivo_salida.name}`")
+            except Exception as e:
+                st.error(f"Error al guardar el archivo JSON: {e}")
+        else:
+            st.warning("Primero debes realizar un análisis antes de guardarlo.")
 
     # -------------------------------------------------------------------------
     # Ejecución del Análisis al pulsar "Analizar Candidato"
@@ -410,6 +432,7 @@ def main():
                     proveedor=prov_code,
                     modo_offline=modo_offline,
                 )
+                st.session_state["ultimo_analisis"] = analisis.model_dump()
             except Exception as exc_eval:
                 st.error(
                     f"No fue posible completar la evaluación estructurada del candidato:\n\n{exc_eval}\n\n"
@@ -494,3 +517,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
